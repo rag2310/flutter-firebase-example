@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_admin/firebase_admin.dart';
 import 'package:firebase_admin/src/credential.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,22 +17,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> actualizar() async {
-    var credential = Credentials.applicationDefault();
-
-    print(credential);
-
-    credential ??= await Credentials.login();
-
-    print(credential);
-
-    var projectId = 'flutter-firebase-example-1af85';
-
-    var auth = FirebaseAdmin.instance.initializeApp(AppOptions(
-        credential: credential ?? Credentials.applicationDefault(),
-        projectId: projectId,
-        storageBucket: '$projectId.appspot.com'));
-
-    print(auth);
+    FirebaseApp app = await Firebase.initializeApp(
+        name: 'flutter-firebase-example',
+        options: FirebaseOptions(
+            appId: "flutter-firebase-example-1af85",
+            apiKey: "AIzaSyAfOXG_EBa3a2q6NUu1ae2PVIE8f7-1poU",
+            measurementId: "",
+            projectId: ""));
 
     // var token = await auth.auth().createCustomToken('0123');
     //
@@ -57,7 +49,4 @@ class _HomePageState extends State<HomePage> {
     //     .doc(doc)
     //     .update({'nom_user': 'Alfre', 'pass_auth': '123'});
   }
-
-  CollectionReference _getStoreRef() =>
-      FirebaseFirestore.instance.collection('usuarios');
 }
